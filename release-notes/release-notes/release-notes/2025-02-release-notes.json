@@ -1,0 +1,52 @@
+{
+  "release": "2025-02",
+  "release_date": "2025-02-20",
+  "summary": "Improvements to POS stability, inventory accuracy, and internal security controls.",
+  "modules": [
+    {
+      "name": "POS",
+      "changes": [
+        {
+          "type": "feature",
+          "title": "Enhanced Inventory Validation",
+          "description": "Added validation checks to prevent incorrect inventory lot selection during POS transactions.",
+          "impact": "Improves inventory accuracy and reduces transaction errors.",
+          "audience": ["Store Managers", "Operations Teams"]
+        },
+        {
+          "type": "fix",
+          "title": "POS Transaction Stability",
+          "description": "Resolved silent transaction failures and improved error messaging when inventory configuration issues occur.",
+          "impact": "Increases transaction reliability during peak usage."
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "changes": [
+        {
+          "type": "fix",
+          "title": "Duplicate Inventory Movements",
+          "description": "Fixed edge cases where inventory movements could be registered more than once in multi-warehouse workflows.",
+          "impact": "Prevents inventory mismatches."
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "changes": [
+        {
+          "type": "improvement",
+          "title": "Root Credential Handling",
+          "description": "Improved internal workflows for root credential operations, including validation and logging.",
+          "impact": "Reduces operational risk and improves auditability.",
+          "visibility": "internal"
+        }
+      ]
+    }
+  ],
+  "known_limitations": [
+    "POS users may need to refresh sessions to see updated validation messages after configuration changes."
+  ],
+  "action_required": "No action required for most users. Administrators should review updated security procedures."
+}
