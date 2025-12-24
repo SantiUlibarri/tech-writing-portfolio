@@ -1,3 +1,7 @@
+---
+title: Root Key Rotation Request Guide
+---
+
 # Root Key Rotation — Customer Request Guide
 
 ## Purpose
