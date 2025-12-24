@@ -1,3 +1,7 @@
+---
+title: Security Update - Root Key Rotation
+---
+
 # Security Update: Root Key Rotation Process
 
 ## Summary
