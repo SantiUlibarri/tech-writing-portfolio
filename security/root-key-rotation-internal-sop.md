@@ -1,3 +1,7 @@
+---
+title: Root Key Rotation Internal SOP
+---
+
 # Internal SOP: Root Key Rotation (Sanitized)
 
 ## Purpose
