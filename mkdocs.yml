@@ -1,0 +1,69 @@
+site_name: Santiago Fernández Ulibarri — Technical Writing Portfolio
+site_url: https://santiulibarri.github.io/tech-writing-portfolio/
+repo_url: https://github.com/SantiUlibarri/tech-writing-portfolio
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+    - content.tabs.link
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - API documentation:
+      - Overview: api/github-api/README.md
+      - Concepts:
+          - Authentication: api/github-api/concepts/authentication.md
+          - Errors: api/github-api/concepts/errors.md
+          - Pagination: api/github-api/concepts/pagination.md
+          - Rate limits: api/github-api/concepts/rate-limits.md
+      - Reference:
+          - Get the authenticated user: api/github-api/reference/get-authenticated-user.md
+          - List repositories: api/github-api/reference/list-user-repos.md
+  - Integration guides:
+      - Overview: implementation/README.md
+      - Clover integration: implementation/clover-overview.md
+      - Customer journey: implementation/clover-customer-journey.md
+      - Implementation guide: implementation/clover-implementation-guide.md
+      - Troubleshooting: implementation/clover-troubleshooting.md
+  - Release notes:
+      - Overview: release-notes/README.md
+      - February 2025: release-notes/2025-02-release-notes.md
+  - Security:
+      - Overview: security/README.md
+      - Security update: security/security-update-root-key-rotation.md
+      - Key rotation request guide: security/root-key-rotation-request-guide.md
+      - Key rotation internal SOP: security/root-key-rotation-internal-sop.md
+  - Platform & operations:
+      - Overview: linux/README.md
+      - Ubuntu CLI guide: linux/ubuntu-cli-guide.md
+      - Managing a systemd service: linux/systemd-service-doc.md
+      - Troubleshooting common errors: linux/troubleshooting-common-errors.md
