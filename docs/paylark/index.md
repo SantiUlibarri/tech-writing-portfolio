@@ -17,3 +17,4 @@ Test keys work only in the test environment, and live keys only in the live envi
 ## Where to start
 
 - **[API reference](reference/index.md)**: every endpoint, request field, response, and error, generated from the [OpenAPI specification](openapi.yaml).
+- **[Postman collection](postman/paylark.postman_collection.json)**: every endpoint with authentication and tests preconfigured. Import it into Postman together with the [mock environment](postman/paylark-mock.postman_environment.json), then run it against a local Prism mock server: `npx @stoplight/prism-cli mock openapi.yaml`.
