@@ -24,7 +24,11 @@ theme:
     - search.suggest
     - content.code.copy
     - content.tabs.link
-
+plugins:
+  - search
+  - swagger-ui-tag:
+      supportedSubmitMethods: []
+      syntaxHighlightTheme: monokai
 markdown_extensions:
   - admonition
   - attr_list
@@ -39,6 +43,9 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Payments API:
+      - Overview: paylark/index.md
+      - API reference: paylark/reference/index.md
   - API documentation:
       - Overview: api/github-api/README.md
       - Concepts:
