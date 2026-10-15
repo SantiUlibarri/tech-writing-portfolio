@@ -6,7 +6,7 @@ hide:
 
 # Santiago Fernández Ulibarri
 
-**Technical Writer: API, integration, and platform documentation**
+**Technical Writer: API, integration, and platform documentation**<br>
 Madrid, Spain · English & Spanish (C2) · [LinkedIn](https://www.linkedin.com/in/santiulibarri) · [GitHub](https://github.com/SantiUlibarri)
 
 I turn complex engineering and product systems into clear, testable, self-service documentation. I've led documentation used by 35,000+ internal users at Oracle and built a documentation function from scratch at Proscai, a retail ERP and integration platform.
