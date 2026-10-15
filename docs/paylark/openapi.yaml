@@ -513,7 +513,15 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            wrongEnvironment:
+           missingKey:
+              summary: No API key sent
+              value:
+                error:
+                  code: missing_api_key
+                  message: No API key was sent. Add an Authorization header with your secret key.
+                  request_id: req_6tR5e4W3
+          wrongEnvironment:
+              summary: Live key sent to the test environment
               value:
                 error:
                   code: invalid_api_key
@@ -539,7 +547,16 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            badCurrency:
+           invalidField:
+              summary: A field has the wrong type or format
+              value:
+                error:
+                  code: invalid_field
+                  message: The field 'amount' must be an integer in the currency's smallest unit, for example 4995 for €49.95.
+                  field: amount
+                  request_id: req_2wQ9e8R7
+          badCurrency:
+              summary: Unsupported currency
               value:
                 error:
                   code: unsupported_currency
