@@ -1,0 +1,567 @@
+openapi: 3.1.0
+
+info:
+  title: Paylark Payments API
+  version: 1.0.0
+  summary: Create orders, track payment status, and issue refunds.
+  description: |
+    The Paylark Payments API lets merchants accept online payments through a
+    hosted payment page, follow each order through its payment lifecycle, and
+    refund completed payments.
+
+    **About this sample:** Paylark is a fictional payment service provider (PSP)
+    created for a documentation portfolio. Its design follows common PSP
+    conventions: a redirect flow, order statuses, signed webhooks, and separate
+    test and live environments.
+  contact:
+    name: Santiago Fernández Ulibarri
+    url: https://santiulibarri.github.io/tech-writing-portfolio/
+  license:
+    name: CC BY 4.0
+    identifier: CC-BY-4.0
+
+servers:
+  - url: https://api.test.paylark.example/v1
+    description: Test environment. Uses test API keys and simulated payments; no real money moves.
+  - url: https://api.paylark.example/v1
+    description: Live environment. Uses live API keys and real payments.
+
+security:
+  - apiKey: []
+
+tags:
+  - name: Orders
+    description: Create orders and check their payment status.
+  - name: Refunds
+    description: Return money to the customer for a completed order.
+
+paths:
+  /orders:
+    post:
+      tags: [Orders]
+      operationId: createOrder
+      summary: Create an order
+      description: |
+        Creates an order and returns a `payment_url`. Redirect the customer to
+        that URL to pay on the Paylark hosted payment page.
+
+        `order_id` is your own reference and must be unique per order. If a
+        request times out, retry it with the same `order_id`: Paylark rejects
+        the duplicate with `409 Conflict` instead of creating a second order.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+            examples:
+              shoes:
+                summary: A €49.95 order paid in Spanish
+                value:
+                  order_id: shop-10045
+                  amount: 4995
+                  currency: EUR
+                  description: Running shoes, size 42
+                  customer:
+                    email: ana.garcia@example.com
+                    locale: es_ES
+                  redirect_urls:
+                    success: https://shop.example/checkout/thank-you
+                    cancel: https://shop.example/checkout/cart
+                  notification_url: https://shop.example/webhooks/paylark
+      responses:
+        '201':
+          description: Order created. Redirect the customer to `payment_url`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+              examples:
+                created:
+                  summary: New order, waiting for payment
+                  value:
+                    id: ord_7Hq2KxN4Vb
+                    order_id: shop-10045
+                    status: initialized
+                    amount: 4995
+                    amount_refunded: 0
+                    currency: EUR
+                    description: Running shoes, size 42
+                    payment_url: https://pay.test.paylark.example/p/ord_7Hq2KxN4Vb
+                    created_at: '2026-10-15T10:24:31Z'
+                    updated_at: '2026-10-15T10:24:31Z'
+                    expires_at: '2026-10-15T11:24:31Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: An order with this `order_id` already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                duplicate:
+                  value:
+                    error:
+                      code: order_id_already_exists
+                      message: An order with order_id 'shop-10045' already exists.
+                      request_id: req_5mT8wQ1z
+        '422':
+          $ref: '#/components/responses/ValidationFailed'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /orders/{order_id}:
+    get:
+      tags: [Orders]
+      operationId: getOrder
+      summary: Get an order
+      description: |
+        Returns the current state of an order. Call this after the customer
+        returns to your site, or after you receive a webhook, to confirm the
+        status before you fulfill the order.
+      parameters:
+        - $ref: '#/components/parameters/OrderId'
+      responses:
+        '200':
+          description: The order.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+              examples:
+                completed:
+                  summary: A paid order
+                  value:
+                    id: ord_7Hq2KxN4Vb
+                    order_id: shop-10045
+                    status: completed
+                    amount: 4995
+                    amount_refunded: 0
+                    currency: EUR
+                    description: Running shoes, size 42
+                    payment_url: https://pay.test.paylark.example/p/ord_7Hq2KxN4Vb
+                    payment_method: card
+                    created_at: '2026-10-15T10:24:31Z'
+                    updated_at: '2026-10-15T10:26:02Z'
+                    expires_at: '2026-10-15T11:24:31Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /orders/{order_id}/refunds:
+    post:
+      tags: [Refunds]
+      operationId: createRefund
+      summary: Refund an order
+      description: |
+        Refunds all or part of a `completed` order. Omit `amount` to refund the
+        remaining balance. You can issue several partial refunds until the full
+        amount is refunded.
+      parameters:
+        - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRefundRequest'
+            examples:
+              partial:
+                summary: Refund €20.00 of the order
+                value:
+                  amount: 2000
+                  reason: Customer returned one item
+      responses:
+        '201':
+          description: Refund created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Refund'
+              examples:
+                partial:
+                  value:
+                    id: ref_3Kd9LpQ2
+                    order_id: shop-10045
+                    amount: 2000
+                    currency: EUR
+                    status: completed
+                    reason: Customer returned one item
+                    created_at: '2026-10-16T09:12:44Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: The order can't be refunded in its current status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                notRefundable:
+                  value:
+                    error:
+                      code: order_not_refundable
+                      message: Only completed orders can be refunded. This order is 'initialized'.
+                      request_id: req_8vN2cR7a
+        '422':
+          description: The refund amount is higher than the amount left to refund.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                tooMuch:
+                  value:
+                    error:
+                      code: refund_exceeds_balance
+                      message: Refund amount 6000 exceeds the refundable balance of 4995.
+                      field: amount
+                      request_id: req_2pX6hJ4n
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+webhooks:
+  orderStatusChanged:
+    post:
+      tags: [Orders]
+      operationId: orderStatusChanged
+      summary: Order status changed
+      description: |
+        Paylark sends this request to your `notification_url` every time an
+        order's status changes.
+
+        Before you trust the payload, verify the `Paylark-Signature` header.
+        Respond with any `2xx` status within 10 seconds. If Paylark gets no `2xx`,
+        it retries up to 8 times over 24 hours, so the same event can arrive more
+        than once: use `event_id` to ignore duplicates.
+      security: []
+      parameters:
+        - name: Paylark-Signature
+          in: header
+          required: true
+          description: |
+            `t` is the Unix timestamp when Paylark signed the request. `v1` is an
+            HMAC-SHA256 of `{t}.{raw request body}`, in hexadecimal, using your
+            webhook signing secret as the key.
+          schema:
+            type: string
+          example: t=1792060000,v1=5f2b8c0e4a1d9f7b3c6e2a8d0b4f1e7c9a3d5b8e2f6c0a4d7b1e9f3c5a8d2b6e
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookEvent'
+            examples:
+              completed:
+                value:
+                  event_id: evt_9Rw4Tz6Y
+                  type: order.status_changed
+                  created_at: '2026-10-15T10:26:02Z'
+                  data:
+                    id: ord_7Hq2KxN4Vb
+                    order_id: shop-10045
+                    status: completed
+                    previous_status: initialized
+                    amount: 4995
+                    currency: EUR
+      responses:
+        '200':
+          description: Your server received the event. Any `2xx` status works.
+
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: |
+        Send your secret API key as a bearer token:
+        `Authorization: Bearer sk_test_...`.
+        Test keys start with `sk_test_` and live keys with `sk_live_`. Each key
+        works only in its own environment.
+
+  parameters:
+    OrderId:
+      name: order_id
+      in: path
+      required: true
+      description: Your reference for the order, as sent when you created it.
+      schema:
+        type: string
+        example: shop-10045
+
+  schemas:
+    OrderStatus:
+      type: string
+      description: |
+        Where the order is in the payment lifecycle.
+        `completed`, `declined`, `cancelled`, and `expired` end the payment attempt.
+        A `completed` order can later become `refunded` or `chargeback`.
+      enum: [initialized, completed, declined, cancelled, expired, refunded, chargeback]
+
+    Amount:
+      type: integer
+      minimum: 1
+      description: Amount in the currency's smallest unit. For EUR, 4995 means €49.95.
+      example: 4995
+
+    Currency:
+      type: string
+      description: Three-letter ISO 4217 currency code.
+      enum: [EUR, GBP, USD]
+      example: EUR
+
+    CreateOrderRequest:
+      type: object
+      required: [order_id, amount, currency, redirect_urls, notification_url]
+      properties:
+        order_id:
+          type: string
+          maxLength: 50
+          description: Your unique reference for this order.
+          example: shop-10045
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        description:
+          type: string
+          maxLength: 200
+          description: Shown to the customer on the payment page.
+        customer:
+          $ref: '#/components/schemas/Customer'
+        redirect_urls:
+          type: object
+          required: [success, cancel]
+          properties:
+            success:
+              type: string
+              format: uri
+              description: Where Paylark sends the customer after the payment attempt ends.
+            cancel:
+              type: string
+              format: uri
+              description: Where Paylark sends the customer if they cancel on the payment page.
+        notification_url:
+          type: string
+          format: uri
+          description: Your endpoint for webhook events about this order. Must use HTTPS.
+
+    Customer:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        locale:
+          type: string
+          description: Language of the payment page, as `language_COUNTRY`.
+          example: es_ES
+
+    Order:
+      type: object
+      required: [id, order_id, status, amount, amount_refunded, currency, payment_url, created_at, updated_at, expires_at]
+      properties:
+        id:
+          type: string
+          description: Paylark's ID for the order.
+          example: ord_7Hq2KxN4Vb
+        order_id:
+          type: string
+          description: Your reference for the order.
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        amount:
+          $ref: '#/components/schemas/Amount'
+        amount_refunded:
+          type: integer
+          minimum: 0
+          description: Total refunded so far, in the currency's smallest unit.
+        currency:
+          $ref: '#/components/schemas/Currency'
+        description:
+          type: string
+        payment_url:
+          type: string
+          format: uri
+          description: Hosted payment page. Redirect the customer here.
+        payment_method:
+          type: string
+          description: How the customer paid. Present once the customer has chosen a method.
+          enum: [card, ideal, bancontact, paypal]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+          description: After this time, an unpaid order moves to `expired`.
+
+    CreateRefundRequest:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/Amount'
+        reason:
+          type: string
+          maxLength: 200
+          description: Internal note. Not shown to the customer.
+
+    Refund:
+      type: object
+      required: [id, order_id, amount, currency, status, created_at]
+      properties:
+        id:
+          type: string
+          example: ref_3Kd9LpQ2
+        order_id:
+          type: string
+        amount:
+          $ref: '#/components/schemas/Amount'
+        currency:
+          $ref: '#/components/schemas/Currency'
+        status:
+          type: string
+          enum: [pending, completed, failed]
+        reason:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    WebhookEvent:
+      type: object
+      required: [event_id, type, created_at, data]
+      properties:
+        event_id:
+          type: string
+          description: Unique ID for this event. Use it to ignore duplicate deliveries.
+        type:
+          type: string
+          const: order.status_changed
+        created_at:
+          type: string
+          format: date-time
+        data:
+          type: object
+          required: [id, order_id, status, previous_status, amount, currency]
+          properties:
+            id:
+              type: string
+            order_id:
+              type: string
+            status:
+              $ref: '#/components/schemas/OrderStatus'
+            previous_status:
+              $ref: '#/components/schemas/OrderStatus'
+            amount:
+              $ref: '#/components/schemas/Amount'
+            currency:
+              $ref: '#/components/schemas/Currency'
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, request_id]
+          properties:
+            code:
+              type: string
+              description: Stable, machine-readable error code. Safe to use in your code.
+            message:
+              type: string
+              description: Human-readable explanation. May change; don't parse it.
+            field:
+              type: string
+              description: The request field that caused the error, when there is one.
+            request_id:
+              type: string
+              description: Include this when you contact Paylark support.
+
+  responses:
+    BadRequest:
+      description: The request body isn't valid JSON or is missing required fields.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            missingField:
+              value:
+                error:
+                  code: missing_field
+                  message: The field 'currency' is required.
+                  field: currency
+                  request_id: req_1aB2c3D4
+    Unauthorized:
+      description: The API key is missing, invalid, or for the wrong environment.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            wrongEnvironment:
+              value:
+                error:
+                  code: invalid_api_key
+                  message: This is a live API key, but the request was sent to the test environment.
+                  request_id: req_9zY8x7W6
+    NotFound:
+      description: No order exists with this `order_id` for your account and environment.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            notFound:
+              value:
+                error:
+                  code: order_not_found
+                  message: No order found with order_id 'shop-99999'.
+                  request_id: req_4kL5m6N7
+    ValidationFailed:
+      description: The request is well-formed, but a value isn't allowed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            badCurrency:
+              value:
+                error:
+                  code: unsupported_currency
+                  message: Currency 'JPY' isn't supported. Use EUR, GBP, or USD.
+                  field: currency
+                  request_id: req_3hG4f5E6
+    TooManyRequests:
+      description: You've sent too many requests. Wait for the number of seconds in `Retry-After`, then retry.
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying.
+          schema:
+            type: integer
+            example: 30
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            rateLimited:
+              value:
+                error:
+                  code: rate_limited
+                  message: Too many requests. Retry after 30 seconds.
+                  request_id: req_7uV8w9X0
