@@ -1,0 +1,1885 @@
+{
+	"info": {
+		"_postman_id": "ce3e6ee0-43e0-4e70-9a1e-9e45cd57d7b2",
+		"name": "Paylark Payments API",
+		"description": "The Paylark Payments API lets merchants accept online payments through a  \nhosted payment page, follow each order through its payment lifecycle, and  \nrefund completed payments.\n\n**About this sample:** Paylark is a fictional payment service provider (PSP)  \ncreated for a documentation portfolio. Its design follows common PSP  \nconventions: a redirect flow, order statuses, signed webhooks, and separate  \ntest and live environments.\n\nContact Support:  \nName: Santiago Fernández Ulibarri",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "58981216",
+		"_collection_link": "https://santiulibarri-8810410.postman.co/workspace/Santiago-Fernandez-Ulibarri's-W~bb852bf5-75cb-4345-8322-7579a61c1418/collection/58981216-ce3e6ee0-43e0-4e70-9a1e-9e45cd57d7b2?action=share&source=collection_link&creator=58981216"
+	},
+	"item": [
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "{order_id}",
+					"item": [
+						{
+							"name": "refunds",
+							"item": [
+								{
+									"name": "Refund an order",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status is 201 Created\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id/refunds",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id",
+												"refunds"
+											],
+											"variable": [
+												{
+													"key": "order_id",
+													"value": "{{orderId}}",
+													"description": "Your reference for the order, as sent when you created it."
+												}
+											]
+										},
+										"description": "Refunds all or part of a `completed` order. Omit `amount` to refund the\nremaining balance. You can issue several partial refunds until the full\namount is refunded.\n"
+									},
+									"response": [
+										{
+											"name": "Refund created.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders/:order_id/refunds",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders",
+														":order_id",
+														"refunds"
+													],
+													"variable": [
+														{
+															"key": "order_id"
+														}
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": \"ref_3Kd9LpQ2\",\n  \"order_id\": \"shop-10045\",\n  \"amount\": 2000,\n  \"currency\": \"EUR\",\n  \"status\": \"completed\",\n  \"reason\": \"Customer returned one item\",\n  \"created_at\": \"2026-10-16T09:12:44Z\"\n}"
+										},
+										{
+											"name": "The API key is missing, invalid, or for the wrong environment.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders/:order_id/refunds",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders",
+														":order_id",
+														"refunds"
+													],
+													"variable": [
+														{
+															"key": "order_id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"missing_api_key\",\n    \"message\": \"No API key was sent. Add an Authorization header with your secret key.\",\n    \"request_id\": \"req_6tR5e4W3\"\n  }\n}"
+										},
+										{
+											"name": "No order exists with this `order_id` for your account and environment.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders/:order_id/refunds",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders",
+														":order_id",
+														"refunds"
+													],
+													"variable": [
+														{
+															"key": "order_id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"order_not_found\",\n    \"message\": \"No order found with order_id 'shop-99999'.\",\n    \"request_id\": \"req_4kL5m6N7\"\n  }\n}"
+										},
+										{
+											"name": "The order can't be refunded in its current status.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders/:order_id/refunds",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders",
+														":order_id",
+														"refunds"
+													],
+													"variable": [
+														{
+															"key": "order_id"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"order_not_refundable\",\n    \"message\": \"Only completed orders can be refunded. This order is 'initialized'.\",\n    \"request_id\": \"req_8vN2cR7a\"\n  }\n}"
+										},
+										{
+											"name": "The refund amount is higher than the amount left to refund.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders/:order_id/refunds",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders",
+														":order_id",
+														"refunds"
+													],
+													"variable": [
+														{
+															"key": "order_id"
+														}
+													]
+												}
+											},
+											"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+											"code": 422,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"refund_exceeds_balance\",\n    \"message\": \"Refund amount 6000 exceeds the refundable balance of 4995.\",\n    \"field\": \"amount\",\n    \"request_id\": \"req_2pX6hJ4n\"\n  }\n}"
+										},
+										{
+											"name": "You've sent too many requests. Wait for the number of seconds in `Retry-After`, then retry.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders/:order_id/refunds",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders",
+														":order_id",
+														"refunds"
+													],
+													"variable": [
+														{
+															"key": "order_id"
+														}
+													]
+												}
+											},
+											"status": "Too Many Requests",
+											"code": 429,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Retry-After",
+													"value": "30",
+													"description": {
+														"content": "Seconds to wait before retrying.",
+														"type": "text/plain"
+													}
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"rate_limited\",\n    \"message\": \"Too many requests. Retry after 30 seconds.\",\n    \"request_id\": \"req_7uV8w9X0\"\n  }\n}"
+										}
+									]
+								},
+								{
+									"name": "Create an order",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status is 201 Created\", function () {",
+													"    pm.response.to.have.status(201);",
+													"});",
+													"",
+													"pm.test(\"Response includes a payment_url\", function () {",
+													"    const order = pm.response.json();",
+													"    pm.expect(order.payment_url).to.be.a(\"string\");",
+													"    pm.environment.set(\"orderId\", order.order_id);",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {},
+												"requests": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders"
+											]
+										},
+										"description": "Creates an order and returns a `payment_url`. Redirect the customer to\nthat URL to pay on the Paylark hosted payment page.\n\n`order_id` is your own reference and must be unique per order. If a\nrequest times out, retry it with the same `order_id`: Paylark rejects\nthe duplicate with `409 Conflict` instead of creating a second order.\n"
+									},
+									"response": [
+										{
+											"name": "Order created. Redirect the customer to `payment_url`.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": \"ord_7Hq2KxN4Vb\",\n  \"order_id\": \"shop-10045\",\n  \"status\": \"initialized\",\n  \"amount\": 4995,\n  \"amount_refunded\": 0,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"payment_url\": \"https://pay.test.paylark.example/p/ord_7Hq2KxN4Vb\",\n  \"created_at\": \"2026-10-15T10:24:31Z\",\n  \"updated_at\": \"2026-10-15T10:24:31Z\",\n  \"expires_at\": \"2026-10-15T11:24:31Z\"\n}"
+										},
+										{
+											"name": "The request body isn't valid JSON or is missing required fields.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"missing_field\",\n    \"message\": \"The field 'currency' is required.\",\n    \"field\": \"currency\",\n    \"request_id\": \"req_1aB2c3D4\"\n  }\n}"
+										},
+										{
+											"name": "The API key is missing, invalid, or for the wrong environment.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"missing_api_key\",\n    \"message\": \"No API key was sent. Add an Authorization header with your secret key.\",\n    \"request_id\": \"req_6tR5e4W3\"\n  }\n}"
+										},
+										{
+											"name": "An order with this `order_id` already exists.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"order_id_already_exists\",\n    \"message\": \"An order with order_id 'shop-10045' already exists.\",\n    \"request_id\": \"req_5mT8wQ1z\"\n  }\n}"
+										},
+										{
+											"name": "The request is well-formed, but a value isn't allowed.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+											"code": 422,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"invalid_field\",\n    \"message\": \"The field 'amount' must be an integer in the currency's smallest unit, for example 4995 for €49.95.\",\n    \"field\": \"amount\",\n    \"request_id\": \"req_2wQ9e8R7\"\n  }\n}"
+										},
+										{
+											"name": "You've sent too many requests. Wait for the number of seconds in `Retry-After`, then retry.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/orders",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"orders"
+													]
+												}
+											},
+											"status": "Too Many Requests",
+											"code": 429,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Retry-After",
+													"value": "30",
+													"description": {
+														"content": "Seconds to wait before retrying.",
+														"type": "text/plain"
+													}
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": {\n    \"code\": \"rate_limited\",\n    \"message\": \"Too many requests. Retry after 30 seconds.\",\n    \"request_id\": \"req_7uV8w9X0\"\n  }\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Get an order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status is a valid order status\", function () {",
+											"    const valid = [\"initialized\", \"completed\", \"declined\", \"cancelled\", \"expired\", \"refunded\", \"chargeback\"];",
+											"    pm.expect(valid).to.include(pm.response.json().status);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/orders/:order_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders",
+										":order_id"
+									],
+									"variable": [
+										{
+											"key": "order_id",
+											"value": "{{orderId}}",
+											"description": "Your reference for the order, as sent when you created it."
+										}
+									]
+								},
+								"description": "Returns the current state of an order. Call this after the customer\nreturns to your site, or after you receive a webhook, to confirm the\nstatus before you fulfill the order.\n"
+							},
+							"response": [
+								{
+									"name": "The order.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"ord_7Hq2KxN4Vb\",\n  \"order_id\": \"shop-10045\",\n  \"status\": \"completed\",\n  \"amount\": 4995,\n  \"amount_refunded\": 0,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"payment_url\": \"https://pay.test.paylark.example/p/ord_7Hq2KxN4Vb\",\n  \"payment_method\": \"card\",\n  \"created_at\": \"2026-10-15T10:24:31Z\",\n  \"updated_at\": \"2026-10-15T10:26:02Z\",\n  \"expires_at\": \"2026-10-15T11:24:31Z\"\n}"
+								},
+								{
+									"name": "The API key is missing, invalid, or for the wrong environment.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"missing_api_key\",\n    \"message\": \"No API key was sent. Add an Authorization header with your secret key.\",\n    \"request_id\": \"req_6tR5e4W3\"\n  }\n}"
+								},
+								{
+									"name": "No order exists with this `order_id` for your account and environment.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"order_not_found\",\n    \"message\": \"No order found with order_id 'shop-99999'.\",\n    \"request_id\": \"req_4kL5m6N7\"\n  }\n}"
+								},
+								{
+									"name": "You've sent too many requests. Wait for the number of seconds in `Retry-After`, then retry.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Too Many Requests",
+									"code": 429,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Retry-After",
+											"value": "30",
+											"description": {
+												"content": "Seconds to wait before retrying.",
+												"type": "text/plain"
+											}
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"rate_limited\",\n    \"message\": \"Too many requests. Retry after 30 seconds.\",\n    \"request_id\": \"req_7uV8w9X0\"\n  }\n}"
+								}
+							]
+						},
+						{
+							"name": "Refund an order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is 201 Created\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders/:order_id/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders",
+										":order_id",
+										"refunds"
+									],
+									"variable": [
+										{
+											"key": "order_id",
+											"value": "{{orderId}}",
+											"description": "Your reference for the order, as sent when you created it."
+										}
+									]
+								},
+								"description": "Refunds all or part of a `completed` order. Omit `amount` to refund the\nremaining balance. You can issue several partial refunds until the full\namount is refunded.\n"
+							},
+							"response": [
+								{
+									"name": "Refund created.",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id/refunds",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id",
+												"refunds"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"ref_3Kd9LpQ2\",\n  \"order_id\": \"shop-10045\",\n  \"amount\": 2000,\n  \"currency\": \"EUR\",\n  \"status\": \"completed\",\n  \"reason\": \"Customer returned one item\",\n  \"created_at\": \"2026-10-16T09:12:44Z\"\n}"
+								},
+								{
+									"name": "The API key is missing, invalid, or for the wrong environment.",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id/refunds",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id",
+												"refunds"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"missing_api_key\",\n    \"message\": \"No API key was sent. Add an Authorization header with your secret key.\",\n    \"request_id\": \"req_6tR5e4W3\"\n  }\n}"
+								},
+								{
+									"name": "No order exists with this `order_id` for your account and environment.",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id/refunds",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id",
+												"refunds"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"order_not_found\",\n    \"message\": \"No order found with order_id 'shop-99999'.\",\n    \"request_id\": \"req_4kL5m6N7\"\n  }\n}"
+								},
+								{
+									"name": "The order can't be refunded in its current status.",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id/refunds",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id",
+												"refunds"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"order_not_refundable\",\n    \"message\": \"Only completed orders can be refunded. This order is 'initialized'.\",\n    \"request_id\": \"req_8vN2cR7a\"\n  }\n}"
+								},
+								{
+									"name": "The refund amount is higher than the amount left to refund.",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id/refunds",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id",
+												"refunds"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+									"code": 422,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"refund_exceeds_balance\",\n    \"message\": \"Refund amount 6000 exceeds the refundable balance of 4995.\",\n    \"field\": \"amount\",\n    \"request_id\": \"req_2pX6hJ4n\"\n  }\n}"
+								},
+								{
+									"name": "You've sent too many requests. Wait for the number of seconds in `Retry-After`, then retry.",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": 2000,\n  \"reason\": \"Customer returned one item\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/orders/:order_id/refunds",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"orders",
+												":order_id",
+												"refunds"
+											],
+											"variable": [
+												{
+													"key": "order_id"
+												}
+											]
+										}
+									},
+									"status": "Too Many Requests",
+									"code": 429,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Retry-After",
+											"value": "30",
+											"description": {
+												"content": "Seconds to wait before retrying.",
+												"type": "text/plain"
+											}
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"rate_limited\",\n    \"message\": \"Too many requests. Retry after 30 seconds.\",\n    \"request_id\": \"req_7uV8w9X0\"\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Create an order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 201 Created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response includes a payment_url\", function () {",
+									"    const order = pm.response.json();",
+									"    pm.expect(order.payment_url).to.be.a(\"string\");",
+									"    pm.environment.set(\"orderId\", order.order_id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						},
+						"description": "Creates an order and returns a `payment_url`. Redirect the customer to\nthat URL to pay on the Paylark hosted payment page.\n\n`order_id` is your own reference and must be unique per order. If a\nrequest times out, retry it with the same `order_id`: Paylark rejects\nthe duplicate with `409 Conflict` instead of creating a second order.\n"
+					},
+					"response": [
+						{
+							"name": "Order created. Redirect the customer to `payment_url`.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"ord_7Hq2KxN4Vb\",\n  \"order_id\": \"shop-10045\",\n  \"status\": \"initialized\",\n  \"amount\": 4995,\n  \"amount_refunded\": 0,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"payment_url\": \"https://pay.test.paylark.example/p/ord_7Hq2KxN4Vb\",\n  \"created_at\": \"2026-10-15T10:24:31Z\",\n  \"updated_at\": \"2026-10-15T10:24:31Z\",\n  \"expires_at\": \"2026-10-15T11:24:31Z\"\n}"
+						},
+						{
+							"name": "The request body isn't valid JSON or is missing required fields.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": {\n    \"code\": \"missing_field\",\n    \"message\": \"The field 'currency' is required.\",\n    \"field\": \"currency\",\n    \"request_id\": \"req_1aB2c3D4\"\n  }\n}"
+						},
+						{
+							"name": "The API key is missing, invalid, or for the wrong environment.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": {\n    \"code\": \"missing_api_key\",\n    \"message\": \"No API key was sent. Add an Authorization header with your secret key.\",\n    \"request_id\": \"req_6tR5e4W3\"\n  }\n}"
+						},
+						{
+							"name": "An order with this `order_id` already exists.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": {\n    \"code\": \"order_id_already_exists\",\n    \"message\": \"An order with order_id 'shop-10045' already exists.\",\n    \"request_id\": \"req_5mT8wQ1z\"\n  }\n}"
+						},
+						{
+							"name": "The request is well-formed, but a value isn't allowed.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": {\n    \"code\": \"invalid_field\",\n    \"message\": \"The field 'amount' must be an integer in the currency's smallest unit, for example 4995 for €49.95.\",\n    \"field\": \"amount\",\n    \"request_id\": \"req_2wQ9e8R7\"\n  }\n}"
+						},
+						{
+							"name": "You've sent too many requests. Wait for the number of seconds in `Retry-After`, then retry.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": \"shop-10045\",\n  \"amount\": 4995,\n  \"currency\": \"EUR\",\n  \"description\": \"Running shoes, size 42\",\n  \"customer\": {\n    \"email\": \"ana.garcia@example.com\",\n    \"locale\": \"es_ES\"\n  },\n  \"redirect_urls\": {\n    \"success\": \"https://shop.example/checkout/thank-you\",\n    \"cancel\": \"https://shop.example/checkout/cart\"\n  },\n  \"notification_url\": \"https://shop.example/webhooks/paylark\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/orders",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Retry-After",
+									"value": "30",
+									"description": {
+										"content": "Seconds to wait before retrying.",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": {\n    \"code\": \"rate_limited\",\n    \"message\": \"Too many requests. Retry after 30 seconds.\",\n    \"request_id\": \"req_7uV8w9X0\"\n  }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{{apiKey}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api.test.paylark.example/v1"
+		},
+		{
+			"key": "orderId",
+			"value": ""
+		}
+	]
+}
