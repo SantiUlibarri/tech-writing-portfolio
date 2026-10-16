@@ -17,6 +17,14 @@ This site is itself a sample of how I work: written in Markdown, version-control
 
 <div class="grid cards" markdown>
 
+-   **Payments API (Paylark)**
+
+    ---
+
+    A complete payment API sample: OpenAPI 3.1 spec, interactive reference, Postman collection tested against a mock server, quickstart, and payment-status guide.
+
+    [Explore the Payments API →](paylark/index.md)
+    
 -   **API documentation**
 
     ---
