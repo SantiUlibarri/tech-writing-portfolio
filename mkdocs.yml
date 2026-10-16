@@ -52,6 +52,7 @@ nav:
       - Overview: paylark/index.md
       - Quickstart: paylark/quickstart.md
       - Payment statuses: paylark/payment-statuses.md
+      - Refunds: paylark/refunds.md
       - API reference: paylark/reference/index.md
   - API documentation:
       - Overview: api/github-api/README.md
