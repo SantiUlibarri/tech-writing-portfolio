@@ -4,6 +4,8 @@
 
 **📖 Live site: https://santiulibarri.github.io/tech-writing-portfolio/**
 
+![Portfolio site homepage](.github/assets/site-homepage.png)
+
 Bilingual (English/Spanish, C2) technical writer specializing in API, integration, and platform documentation. I've led documentation used by 35,000+ internal users at Oracle and built a documentation function from scratch at Proscai, a retail ERP and integration platform.
 
 This repository is the source for my portfolio site. The site itself is a working example of a docs-as-code workflow: Markdown in Git, pull-request review, automated builds, and continuous deployment.
