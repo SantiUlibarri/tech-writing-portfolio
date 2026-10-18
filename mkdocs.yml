@@ -54,6 +54,7 @@ nav:
       - Payment statuses: paylark/payment-statuses.md
       - Refunds: paylark/refunds.md
       - API reference: paylark/reference/index.md
+      - Webhooks: paylark/webhooks.md
   - API documentation:
       - Overview: api/github-api/README.md
       - Concepts:
